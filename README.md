@@ -2,7 +2,7 @@
 
 Official repository for the paper [Open-RAG: Enhanced Retrieval Augmented Reasoning with Open-Source Large Language Models]().
 
-[Models (Coming soon)]() | [Paper](https://arxiv.org/abs/2410.01782) | [Training data (Coming soon)]() | [Evaluation Data (Coming soon)]()
+[Models (Coming soon)]() | [Paper](https://arxiv.org/abs/2410.01782) | [Training data](https://huggingface.co/datasets/shayekh/openrag_train_data) | [Evaluation Data (Coming soon)]()
 
 ## Training 
 
