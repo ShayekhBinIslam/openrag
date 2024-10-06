@@ -1,8 +1,8 @@
 # Open-RAG: Enhanced Retrieval Augmented Reasoning with Open-Source Large Language Models
 
-Official repository for the paper [Open-RAG: Enhanced Retrieval Augmented Reasoning with Open-Source Large Language Models]().
+Official repository for the EMNLP Findings 2024 paper [Open-RAG: Enhanced Retrieval Augmented Reasoning with Open-Source Large Language Models](https://arxiv.org/abs/2410.01782).
 
-[Models (Coming soon)]() | [Paper](https://arxiv.org/abs/2410.01782) | [Training data](https://huggingface.co/datasets/shayekh/openrag_train_data) | [Evaluation Data (Coming soon)]()
+[Model](https://huggingface.co/shayekh/openrag_llama2_7b_8x135m) | [Paper](https://arxiv.org/abs/2410.01782) | [Training data](https://huggingface.co/datasets/shayekh/openrag_train_data) | [Evaluation Data](https://huggingface.co/datasets/shayekh/openrag_bench)
 
 ## Training 
 
@@ -47,3 +47,27 @@ torchrun --nnodes=1 --nproc_per_node=4 --master_port=29506 \
   --adapter_dim 512 --moe_scaling 0.25 --num_experts 8 --topk 2
 ```
 
+
+## Evaluation
+
+### Merge Expert Weights into the Base Model
+
+```
+python merge_moe_lora.py --base_model "meta-llama/Llama-2-7b-hf" \
+  --model_path "./checkpoints"
+```
+
+### Multi-Hop QA 
+
+```sh
+python run_short_form_moe_hotpot.py \
+  --model_name ./checkpoints/merged/ \
+  --world_size 1 --w_use 0.5 \
+  --dataset shayekh/openrag_bench --task hotpotqa \
+  --mode adaptive_retrieval --max_new_tokens 100 \
+  --threshold 0.0 --mode adaptive_retrieval \
+  --metric hotpotem --ndocs 3 --use_groundness --use_utility --use_seqscore \
+  --output_file ./eval/hotpotqa.jsonl
+```
+
+Tasks: `2wikimultihopqa`, `hotpotqa` and `musique`
